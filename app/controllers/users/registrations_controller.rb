@@ -12,16 +12,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    # puts "----hello----"
-    user = User.new(params[:user])
-    puts "--------#{user.inspect}---------"
+    build_resource(sign_up_params)
+    @user = current_resource_owner if (params[:user]).present?
+  # binding.pry
+    # puts "--------#{@user.inspect}---------"
 
-    if user.save!
-      render :json=> user.as_json(:auth_token=>user.authentication_token, :email=>user.email), :status=>201
+    if @user.save
+      render_user and return if resource.user?
+      render :json=> @user, :status=>201
       return
     else
       warden.custom_failure!
-      render :json=> user.errors, :status=>422
+      render :json=> @user.errors, :status=>422
     end
     # super
   end
@@ -71,4 +73,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  private
+
+  def render_user
+    render json: resource, serializer: Users::UserSerializer, status: 200
+  end
+
 end
