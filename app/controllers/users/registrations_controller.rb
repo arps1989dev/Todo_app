@@ -5,27 +5,44 @@ class Users::RegistrationsController < Devise::RegistrationsController
   
 
   # POST /resource
+  # def create
+  #   build_resource(sign_up_params)
+    
+  #   if @user.save
+  #     render :json=> @user, :status=>201
+  #     return
+  #   else
+  #     warden.custom_failure!
+  #     render :json=> @user.errors, :status=>422
+  #   end
+  # end
+
   def create
     build_resource(sign_up_params)
-    @user = current_resource_owner if (params[:user]).present?
-  # binding.pry
-    # puts "--------#{@user.inspect}---------"
 
-    if @user.save
-      render_user and return if resource.user?
-      render :json=> @user, :status=>201
-      return
+    if resource.save
+      if resource.persisted?
+        if resource.active_for_authentication?
+          sign_up(resource_name, resource)
+        else
+          expire_data_after_sign_in!
+        end
+        render json: resource, status: :ok
+      else
+        render json: { error: resource.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      warden.custom_failure!
-      render :json=> @user.errors, :status=>422
+      render json: { error: resource.errors.full_messages }, status: :unprocessable_entity
     end
+
   end
 
 
-  private
+  protected
 
-  def render_user
-    render json: resource, serializer: Users::UserSerializer, status: 200
+  def authenticate_scope!
+    # send(:"authenticate_#{resource_name}!", force: true)
+    self.resource = send(:"current_#{resource_name}")
   end
 
 end
