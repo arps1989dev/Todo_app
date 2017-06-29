@@ -1,5 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  
+
+  # prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy]
   skip_before_action :doorkeeper_authorize!
   respond_to :json
   
@@ -37,12 +38,34 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   end
 
+  # PUT /resource
+  def update
+    # resource.skip_reconfirmation! if resource.customer?
+    
+    resource_updated = update_resource(resource, account_update_params)
+    if resource_updated
+      # render_customer_data and return if resource.customer?
+      # render_worker_date and return if resource.worker? || resource.sub_admin?
+      render json: resource, status: :ok
+    else
+      render json: { error: resource.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
 
   protected
 
   def authenticate_scope!
     # send(:"authenticate_#{resource_name}!", force: true)
     self.resource = send(:"current_#{resource_name}")
+  end
+
+  # def account_update_params
+  #   devise_parameter_sanitizer.sanitize(:account_update)
+  # end
+
+  def update_resource(resource, params)
+    resource.update_without_password(params)
   end
 
 end
