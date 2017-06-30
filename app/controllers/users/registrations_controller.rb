@@ -19,22 +19,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   def create
-    build_resource(sign_up_params)
+    # build_resource(sign_up_params)
 
-    if resource.save
-      if resource.persisted?
-        if resource.active_for_authentication?
-          sign_up(resource_name, resource)
-        else
-          expire_data_after_sign_in!
-        end
-        render json: resource, status: :ok
-      else
-        render json: { error: resource.errors.full_messages }, status: :unprocessable_entity
-      end
-    else
-      render json: { error: resource.errors.full_messages }, status: :unprocessable_entity
-    end
+    # if resource.save
+    #   if resource.persisted?
+    #     if resource.active_for_authentication?
+    #       sign_up(resource_name, resource)
+    #     else
+    #       expire_data_after_sign_in!
+    #     end
+    #     render json: resource, status: :ok
+    #   else
+    #     render json: { error: resource.errors.full_messages }, status: :unprocessable_entity
+    #   end
+    # else
+    #   render json: { error: resource.errors.full_messages }, status: :unprocessable_entity
+    # end
+    # super
 
   end
 
