@@ -12,12 +12,12 @@ class ApplicationController < ActionController::API
   # before_action :authorize_request
   # attr_reader :current_user
 
-  private
 
   # def authorize_request
   #   @current_user = (AuthorizeApiRequest.new(request.headers).call)[:user]
   # end
-
+  protected
+  
   def configure_permitted_parameters
     added_attrs = [:name, :email, :password, :password_confirmation]
     devise_parameter_sanitizer.permit(:sign_up, keys: added_attrs)
@@ -29,6 +29,7 @@ class ApplicationController < ActionController::API
     end
   end
 
+  private
   def current_resource_owner
     User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end

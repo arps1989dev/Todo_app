@@ -7,6 +7,7 @@ class TodosController < ApplicationController
   end
 
   def create
+    # binding.pry
     @todo = current_resource_owner.todos.create!(todo_params)
     json_response(@todo, :created)
   end

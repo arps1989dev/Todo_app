@@ -50,3 +50,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 gem 'doorkeeper'
 gem 'doorkeeper-jwt'
+# For search
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
