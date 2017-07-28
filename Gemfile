@@ -53,3 +53,5 @@ gem 'doorkeeper-jwt'
 # For search
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+
+gem "omnicontacts"

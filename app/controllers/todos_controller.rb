@@ -26,6 +26,11 @@ class TodosController < ApplicationController
     head :no_content
   end
 
+  def contact
+    @contacts = request.env['omnicontacts.contacts']
+    json_response(@contacts)
+  end
+
   private
 
   def todo_params
