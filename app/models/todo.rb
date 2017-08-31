@@ -1,7 +1,7 @@
-require 'elasticsearch/model'
+# require 'elasticsearch/model'
 
 class Todo < ApplicationRecord
-  include Searchable
+  # include Searchable
   
 	has_many :items, dependent: :destroy
 	belongs_to :user

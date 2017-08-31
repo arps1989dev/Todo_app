@@ -12,11 +12,12 @@ Doorkeeper.configure do
 
   resource_owner_from_credentials do |routes|
     user = User.find_by(email: params[:email])
-    if user.present?
+    if user.present? && user.valid_password?(params[:password])
       user
     else
       raise Doorkeeper::Errors::DoorkeeperError.new('Invalid email and password.')
     end
+    
   end
   
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
@@ -151,4 +152,4 @@ Doorkeeper::JWT.configure do
   encryption_method :hs512
 end
 
-# Doorkeeper::OAuth::TokenResponse.send :prepend, CustomTokenResponse
+Doorkeeper::OAuth::TokenResponse.send :prepend, CustomTokenResponse

@@ -51,7 +51,5 @@ gem 'devise'
 gem 'doorkeeper'
 gem 'doorkeeper-jwt'
 # For search
-gem 'elasticsearch-model'
-gem 'elasticsearch-rails'
-
-gem "omnicontacts"
+# gem 'elasticsearch-model'
+# gem 'elasticsearch-rails'

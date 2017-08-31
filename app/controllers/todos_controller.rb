@@ -1,4 +1,6 @@
 class TodosController < ApplicationController
+  before_action :set_todo, only: [:update]
+
 
   def index
     # get paginated current user todos
@@ -17,18 +19,14 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo.update(todo_params)
-    head :no_content
+    @todo.update!(todo_params)
+    # binding.pry
+    json_response(@todo, :created)
   end
 
   def destroy
     @todo.destroy
     head :no_content
-  end
-
-  def contact
-    @contacts = request.env['omnicontacts.contacts']
-    json_response(@contacts)
   end
 
   private
@@ -38,6 +36,6 @@ class TodosController < ApplicationController
   end
 
   def set_todo
-    @todo = Todo.find(params[:id])
+    @todo = current_resource_owner.todos.find(params[:id])
   end
 end
