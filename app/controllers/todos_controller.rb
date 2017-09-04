@@ -1,18 +1,28 @@
 class TodosController < ApplicationController
   before_action :set_todo, only: [:update]
-  skip_before_action :doorkeeper_authorize!
-
 
   def index
     # get paginated current user todos
-    @todos = Todo.paginate(page: params[:page], per_page: 4)
-    json_response(@todos)
+    @todos = current_resource_owner.todos.paginate(page: params[:page], per_page: 4)
+    # json_response(@todos)
+    json_response({
+      success: true,
+      data: {
+        todos: @todos,
+      }
+    }, 200)
   end
 
   def create
     # binding.pry
-    @todo = Todo.create!(todo_params)
-    json_response(@todo, :created)
+    @todo = current_resource_owner.todos.create!(todo_params)
+    # json_response(@todo, :created)
+    json_response({
+      success: true,
+      data: {
+        todo: @todo,
+      }
+    }, 201)
   end
 
   def show
@@ -36,7 +46,7 @@ class TodosController < ApplicationController
     params.require(:todo).permit(:title, :user_id)
   end
 
-  # def set_todo
-  #   @todo = current_resource_owner.todos.find(params[:id])
-  # end
+  def set_todo
+    @todo = current_resource_owner.todos.find(params[:id])
+  end
 end
