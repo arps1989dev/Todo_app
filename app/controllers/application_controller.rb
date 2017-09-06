@@ -30,8 +30,17 @@ class ApplicationController < ActionController::API
   end
 
   private
+
   def current_resource_owner
     User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+  end
+
+  def array_serializer
+    ActiveModel::Serializer::CollectionSerializer
+  end
+
+  def single_record_serializer
+    ActiveModel::SerializableResource
   end
   
 end

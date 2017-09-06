@@ -4,7 +4,13 @@ class ItemsController < ApplicationController
 
 
   def index
-    json_response(@todo.items)
+    @items = @todo.items
+    json_response({
+      success: true,
+      data: {
+        items: array_serializer.new(@items, serializer: ItemSerializer),
+      }
+    }, 200)
   end
 
   def show
@@ -13,17 +19,27 @@ class ItemsController < ApplicationController
 
   def create
     @item = @todo.items.create!(item_params)
-    json_response(@item.to_json(include: ['todo']), :created)
+    json_response({
+      success: true,
+      data: {
+        item: single_record_serializer.new(@item, serializer: ItemSerializer),
+      }
+    }, 201)
   end
 
   def update
     @item.update(item_params)
-    head :no_content
+    json_response({
+      success: true,
+      data: {
+        item: single_record_serializer.new(@item, serializer: ItemSerializer),
+      }
+    }, 201)
   end
 
   def destroy
     @item.destroy
-    head :no_content
+    json_response({success: true, message: "Item destroy successfully.", data: {item: @item}}, 200)
   end
 
   private

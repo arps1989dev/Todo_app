@@ -2,10 +2,7 @@ class TodosController < ApplicationController
   before_action :set_todo, only: [:update, :destroy]
 
   def index
-    # get paginated current user todos
-    # @todos = current_resource_owner.todos.paginate(page: params[:page], per_page: 4)
     @todos = current_resource_owner.todos
-    # json_response(@todos)
     json_response({
       success: true,
       data: {
@@ -15,9 +12,7 @@ class TodosController < ApplicationController
   end
 
   def create
-    # binding.pry
     @todo = current_resource_owner.todos.create!(todo_params)
-    # json_response(@todo, :created)
     json_response({
       success: true,
       data: {
@@ -31,9 +26,7 @@ class TodosController < ApplicationController
   end
 
   def update
-    # binding.pry
     @todo.update_attributes!(todo_params)
-    # json_response(@todo, :created)
     json_response({ success: true, data: {todo: @todo} }, 201)
   end
 
