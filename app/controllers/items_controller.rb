@@ -4,7 +4,8 @@ class ItemsController < ApplicationController
 
 
   def index
-    @items = @todo.items
+    # binding.pry
+    @items = current_resource_owner.todos.find_by(id: params[:todo_id]).items
     json_response({
       success: true,
       data: {
