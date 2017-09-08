@@ -28,7 +28,7 @@ gem 'will_paginate'
 # gem 'capistrano-rails', group: :development
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+# gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -49,6 +49,7 @@ gem 'devise'
 gem 'doorkeeper'
 gem 'doorkeeper-jwt'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'friendly_id', '~> 5.1.0'
 # For search
 # gem 'elasticsearch-model'
 # gem 'elasticsearch-rails'

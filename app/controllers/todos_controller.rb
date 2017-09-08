@@ -1,5 +1,5 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: [:update, :destroy]
+  before_action :set_todo, only: [:update, :destroy, :show]
 
   def index
     # get paginated current user todos
@@ -27,7 +27,13 @@ class TodosController < ApplicationController
   end
 
   def show
-    json_response(@todo)
+    # binding.pry
+    json_response({
+      success: true,
+      data: {
+        todo: single_record_serializer.new(@todo, serializer: SingleTodoSerializer),
+      }
+    }, 200)
   end
 
   def update
@@ -49,6 +55,6 @@ class TodosController < ApplicationController
   end
 
   def set_todo
-    @todo = current_resource_owner.todos.find(params[:id])
+    @todo = Todo.friendly.find(params[:id])
   end
 end
