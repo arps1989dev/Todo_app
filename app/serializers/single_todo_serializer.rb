@@ -1,3 +1,3 @@
 class SingleTodoSerializer < ActiveModel::Serializer
- attributes :id, :title
+ attributes :id, :title, :slug
 end

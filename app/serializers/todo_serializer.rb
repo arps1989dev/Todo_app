@@ -1,5 +1,5 @@
 class TodoSerializer < ActiveModel::Serializer
-  attributes :id, :title
+  attributes :id, :title, :slug
 
-  # has_many :items
+  has_many :items
 end
