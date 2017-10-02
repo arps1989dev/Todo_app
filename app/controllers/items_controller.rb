@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
 
   def index
     # binding.pry
-    @items = current_resource_owner.todos.find_by(id: params[:todo_id]).items
+    @items = @todo.items
     json_response({
       success: true,
       data: {
@@ -50,7 +50,7 @@ class ItemsController < ApplicationController
   end
 
   def set_todo
-    @todo = Todo.find(params[:todo_id])
+    @todo = current_resource_owner.todos.friendly.find(params[:todo_id])
   end
 
   def set_todo_item
